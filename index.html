@@ -1,0 +1,970 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Daftar — bog'chalar uchun moliya tizimi qanday ishlashi: rollar, oylik to'lov hisobi, to'lov taqsimoti, xarajat zayavkalari, byudjet va ota-onalar uchun Telegram ilova.">
+<meta property="og:title" content="Daftar qanday ishlaydi">
+<meta property="og:description" content="Bog'chalar uchun moliya tizimi — misollar va kalkulyator bilan.">
+<title>Daftar qanday ishlaydi</title>
+<style>
+html{color-scheme:light}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+.dl{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;align-items:center}
+.dl a{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:15px;padding:10px 16px;border-radius:999px;text-decoration:none;border:1px solid var(--accent)}
+.dl a.p{background:var(--accent);color:#fff}
+.dl a.s{background:var(--surface);color:var(--accent-ink)}
+.dl span{font-size:14px;color:var(--ink-3)}
+:root[data-theme="dark"] .dl a.p{color:#0E110F}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .dl a.p{color:#0E110F}}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Spectral:wght@500;600;700&display=swap">
+<style>
+:root{
+  --paper:#FBFBF9; --surface:#FFFFFF; --sunk:#F4F6F2; --ledger:#F1F5EF;
+  --ink:#161A17; --ink-2:#4C554E; --ink-3:#7E8880;
+  --rule:#E2E6DF; --rule-2:#CFD5CB;
+  --accent:#15603A; --accent-ink:#0E4227; --accent-soft:#E8F0EA; --accent-line:#B9D2C3;
+  --neg:#A32A18; --neg-soft:#FAEDEA; --neg-line:#E3BBB1;
+  --warn:#8A6108; --warn-soft:#FBF3E2; --warn-line:#E3D0A6;
+  --tg:#2A7AB8; --tg-soft:#E7F1F9;
+  --shadow:0 1px 2px rgba(22,26,23,.06), 0 8px 24px -12px rgba(22,26,23,.18);
+  --serif:"Spectral",Georgia,"Times New Roman",serif;
+  --sans:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r:4px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#0E110F; --surface:#161A17; --sunk:#1B201C; --ledger:#191E1A;
+    --ink:#E7EBE6; --ink-2:#A6B0A8; --ink-3:#737D75;
+    --rule:#272D28; --rule-2:#39413A;
+    --accent:#63B98A; --accent-ink:#8ED2AB; --accent-soft:#15241C; --accent-line:#2C4736;
+    --neg:#E08A76; --neg-soft:#2A1815; --neg-line:#4A2A22;
+    --warn:#D6AC5C; --warn-soft:#251E10; --warn-line:#463822;
+    --tg:#6FB2E6; --tg-soft:#12202B;
+    --shadow:0 1px 2px rgba(0,0,0,.5), 0 10px 28px -14px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#0E110F; --surface:#161A17; --sunk:#1B201C; --ledger:#191E1A;
+  --ink:#E7EBE6; --ink-2:#A6B0A8; --ink-3:#737D75;
+  --rule:#272D28; --rule-2:#39413A;
+  --accent:#63B98A; --accent-ink:#8ED2AB; --accent-soft:#15241C; --accent-line:#2C4736;
+  --neg:#E08A76; --neg-soft:#2A1815; --neg-line:#4A2A22;
+  --warn:#D6AC5C; --warn-soft:#251E10; --warn-line:#463822;
+  --tg:#6FB2E6; --tg-soft:#12202B;
+  --shadow:0 1px 2px rgba(0,0,0,.5), 0 10px 28px -14px rgba(0,0,0,.7);
+}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;text-wrap:balance;margin:0;color:var(--ink)}
+p{margin:0}
+.num{font-variant-numeric:tabular-nums lining-nums}
+.wrap{max-width:1100px;margin:0 auto;padding-inline:20px}
+@media (max-width:480px){.wrap{padding-inline:16px}}
+
+/* ---------- top bar ---------- */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--rule)}
+.bar .wrap{display:flex;align-items:center;gap:18px;height:52px}
+.mark{font-family:var(--serif);font-weight:600;font-size:20px;display:flex;align-items:center;gap:6px;flex:none;color:var(--ink);text-decoration:none}
+.mark i{width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;margin-top:6px}
+.toc{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}
+.toc::-webkit-scrollbar{display:none}
+.toc a{flex:none;font-size:14px;color:var(--ink-2);text-decoration:none;padding:6px 10px;border-radius:999px;white-space:nowrap}
+.toc a:hover{background:var(--sunk);color:var(--ink)}
+.toc a.on{background:var(--accent-soft);color:var(--accent-ink)}
+
+/* ---------- hero ---------- */
+.hero{padding-block:56px 40px;border-bottom:1px solid var(--rule);
+  background-image:repeating-linear-gradient(to bottom,transparent 0 31px,var(--ledger) 31px 32px);}
+.hero .wrap{display:grid;gap:36px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.hero h1{font-size:clamp(34px,5.4vw,58px);line-height:1.06;max-width:17ch;margin-top:10px}
+.hero h1 em{font-style:italic;color:var(--accent)}
+.lede{font-size:clamp(17px,1.9vw,20px);color:var(--ink-2);max-width:62ch;margin-top:18px}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:14px;padding:5px 11px;border:1px solid var(--rule-2);border-radius:999px;background:var(--surface);color:var(--ink-2)}
+.chip b{color:var(--ink);font-weight:600}
+
+/* money flow */
+.flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:10px;align-items:stretch}
+.flow .col{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:16px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
+.flow .col h3{font-size:18px}
+.flow .col .k{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.flow ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.flow li{display:flex;gap:8px;align-items:baseline;font-size:15px;color:var(--ink-2)}
+.flow li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent-line);flex:none;transform:translateY(-2px)}
+.flow .arrow{display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:22px}
+.flow-foot{margin-top:12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:15px;color:var(--ink-2)}
+.flow-foot .line{flex:1;min-width:40px;height:1px;background:var(--rule-2)}
+@media (max-width:820px){
+  .flow{grid-template-columns:1fr}
+  .flow .arrow{transform:rotate(90deg);height:18px}
+}
+
+/* ---------- sections ---------- */
+section.s{padding-block:64px;border-bottom:1px solid var(--rule);scroll-margin-top:56px}
+section.s:nth-of-type(even){background:var(--surface)}
+.s-head{display:grid;grid-template-columns:180px minmax(0,1fr);gap:28px;margin-bottom:30px}
+.s-head .tag{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:600;padding-top:10px;border-top:2px solid var(--accent);align-self:start}
+.s-head h2{font-size:clamp(26px,3.4vw,38px);line-height:1.15}
+.s-head p{color:var(--ink-2);font-size:18px;max-width:64ch;margin-top:10px}
+.body{margin-left:208px}
+@media (max-width:820px){
+  .s-head{grid-template-columns:1fr;gap:12px}
+  .s-head .tag{justify-self:start;padding-top:8px}
+  .body{margin-left:0}
+}
+.note{font-size:15px;color:var(--ink-2);background:var(--sunk);border-left:3px solid var(--rule-2);padding:12px 14px;border-radius:0 var(--r) var(--r) 0}
+.note.ok{background:var(--accent-soft);border-color:var(--accent)}
+.note.warn{background:var(--warn-soft);border-color:var(--warn)}
+.note b{color:var(--ink)}
+.stack{display:grid;gap:18px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:820px){.grid2,.grid3{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:20px}
+section.s:nth-of-type(even) .panel{background:var(--paper)}
+.panel h3{font-size:19px;margin-bottom:8px}
+.panel p{color:var(--ink-2);font-size:15px}
+.panel p + p{margin-top:8px}
+.muted{color:var(--ink-3);font-size:14px}
+
+/* ---------- roles ---------- */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.tab{font:inherit;font-size:15px;padding:8px 14px;border-radius:999px;border:1px solid var(--rule-2);background:var(--surface);color:var(--ink-2);cursor:pointer}
+.tab:hover{border-color:var(--accent-line);color:var(--ink)}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+:root[data-theme="dark"] .tab[aria-selected="true"]{color:#0E110F}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tab[aria-selected="true"]{color:#0E110F}}
+.role{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px}
+@media (max-width:820px){.role{grid-template-columns:1fr}}
+.role .who{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:10px 18px;align-items:baseline}
+.role .who h3{font-size:24px}
+.role .who span{color:var(--ink-2)}
+.list{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.list li{display:grid;grid-template-columns:20px minmax(0,1fr);gap:8px;font-size:15px;color:var(--ink-2)}
+.list li::before{content:"✓";color:var(--accent);font-weight:700}
+.list.no li::before{content:"✕";color:var(--neg)}
+.box-h{font-size:13px;letter-spacing:.07em;text-transform:uppercase;font-weight:600;color:var(--ink-3);margin-bottom:10px}
+
+.tbl-wrap{overflow-x:auto;border:1px solid var(--rule);border-radius:6px;background:var(--surface)}
+section.s:nth-of-type(even) .tbl-wrap{background:var(--paper)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:15px}
+th,td{padding:10px 12px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+thead th{font-size:13px;font-weight:600;color:var(--ink-3);letter-spacing:.03em;background:var(--sunk)}
+tbody tr:last-child td{border-bottom:0}
+td.y,td.n{text-align:center;width:11%}
+td.y{color:var(--accent);font-weight:700}
+td.n{color:var(--ink-3)}
+th.c{text-align:center}
+
+/* ---------- month timeline ---------- */
+.tl{list-style:none;margin:0;padding:0;position:relative;display:grid;gap:0}
+.tl::before{content:"";position:absolute;left:72px;top:6px;bottom:6px;width:2px;background:var(--rule-2)}
+.tl li{display:grid;grid-template-columns:60px 26px minmax(0,1fr);gap:0 12px;padding-bottom:22px;position:relative}
+.tl .d{font-family:var(--serif);font-weight:600;font-size:15px;color:var(--ink-3);text-align:right;padding-top:1px}
+.tl .dot{width:14px;height:14px;border-radius:50%;background:var(--surface);border:3px solid var(--accent);margin:4px 0 0 6px;position:relative;z-index:1}
+section.s:nth-of-type(even) .tl .dot{background:var(--surface)}
+.tl .dot.w{border-color:var(--warn)} .tl .dot.t{border-color:var(--tg)}
+.tl h3{font-size:18px}
+.tl p{color:var(--ink-2);font-size:15px;margin-top:3px;max-width:66ch}
+.who-pill{display:inline-block;font-family:var(--sans);font-size:12px;font-weight:600;padding:1px 8px;border-radius:999px;background:var(--sunk);color:var(--ink-2);margin-left:6px;vertical-align:2px;letter-spacing:.02em}
+
+/* ---------- calculator ---------- */
+.calc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;border:1px solid var(--rule);border-radius:6px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow)}
+@media (max-width:860px){.calc{grid-template-columns:1fr}}
+.calc .in{padding:20px;display:grid;gap:14px;border-right:1px solid var(--rule)}
+@media (max-width:860px){.calc .in{border-right:0;border-bottom:1px solid var(--rule)}}
+.fld{display:grid;gap:5px}
+.fld label{font-size:14px;font-weight:600;color:var(--ink)}
+.fld .h{font-size:13px;color:var(--ink-3)}
+.fld input[type=number]{font:inherit;font-size:17px;padding:8px 10px;border:1px solid var(--rule-2);border-radius:var(--r);background:var(--paper);color:var(--ink);width:100%;font-variant-numeric:tabular-nums}
+.fld input[type=number]:focus{outline:2px solid var(--accent-line);border-color:var(--accent)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+@media (max-width:480px){.row3{grid-template-columns:1fr}}
+.calc .out{padding:20px;background:var(--ledger);display:flex;flex-direction:column;gap:14px}
+.ledger-lines{display:grid;gap:0;font-size:15px}
+.ledger-lines .l{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:7px 0;border-bottom:1px dashed var(--rule-2)}
+.ledger-lines .l span:first-child{color:var(--ink-2)}
+.ledger-lines .l span:last-child{font-variant-numeric:tabular-nums;white-space:nowrap}
+.ledger-lines .l.minus span:last-child{color:var(--neg)}
+.total{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding-top:6px;flex-wrap:wrap}
+.total .lbl{font-weight:600}
+.total .v{font-family:var(--serif);font-size:30px;font-weight:600;font-variant-numeric:tabular-nums lining-nums;color:var(--accent-ink)}
+.credit{border:1px solid var(--accent-line);background:var(--surface);border-radius:var(--r);padding:12px 14px;font-size:15px;color:var(--ink-2)}
+.credit b{font-family:var(--serif);font-size:20px;color:var(--ink)}
+.cap{font-size:13px;color:var(--warn);font-weight:600}
+
+/* ---------- allocation ---------- */
+.alloc{display:grid;gap:16px}
+.alloc .ctl{display:flex;flex-wrap:wrap;gap:14px;align-items:end}
+.alloc .ctl .fld{min-width:220px;flex:1}
+.presets{display:flex;gap:6px;flex-wrap:wrap}
+.presets button{font:inherit;font-size:14px;padding:7px 11px;border:1px solid var(--rule-2);border-radius:999px;background:var(--surface);color:var(--ink-2);cursor:pointer}
+.presets button:hover{border-color:var(--accent);color:var(--ink)}
+.debt{display:grid;grid-template-columns:110px minmax(0,1fr) 130px;gap:12px;align-items:center;font-size:15px}
+@media (max-width:560px){.debt{grid-template-columns:1fr;gap:4px}}
+.debt .m{font-weight:600}
+.meter{height:30px;border-radius:var(--r);background:var(--neg-soft);border:1px solid var(--neg-line);overflow:hidden;position:relative}
+.meter .f{position:absolute;inset:0 auto 0 0;background:var(--accent);transition:width .45s cubic-bezier(.2,.7,.2,1)}
+.meter .t{position:absolute;inset:0;display:flex;align-items:center;padding-inline:10px;font-size:13px;font-weight:600;color:var(--ink);mix-blend-mode:normal}
+.debt .st{font-variant-numeric:tabular-nums;text-align:right;color:var(--ink-2)}
+@media (max-width:560px){.debt .st{text-align:left}}
+.over{font-size:15px;padding:10px 14px;border-radius:var(--r);background:var(--accent-soft);color:var(--accent-ink)}
+@media (prefers-reduced-motion:reduce){.meter .f,.bud .f{transition:none}}
+
+/* ---------- expense flow ---------- */
+.steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;counter-reset:st}
+@media (max-width:900px){.steps{grid-template-columns:1fr}}
+.step{position:relative;padding:16px 16px 16px 16px;background:var(--surface);border:1px solid var(--rule);margin-right:-1px}
+section.s:nth-of-type(even) .step{background:var(--paper)}
+@media (max-width:900px){.step{margin-right:0;margin-bottom:-1px}}
+.step:first-child{border-radius:6px 0 0 6px}.step:last-child{border-radius:0 6px 6px 0}
+@media (max-width:900px){.step:first-child{border-radius:6px 6px 0 0}.step:last-child{border-radius:0 0 6px 6px}}
+.step .n{font-family:var(--serif);font-size:13px;color:var(--ink-3);font-weight:600}
+.step h3{font-size:17px;margin:4px 0 6px}
+.step p{font-size:14px;color:var(--ink-2)}
+.step .by{display:inline-block;margin-top:10px;font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;background:var(--accent-soft);color:var(--accent-ink)}
+.pill{display:inline-block;font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;border:1px solid var(--rule-2);color:var(--ink-2);background:var(--surface);white-space:nowrap}
+.pill.g{border-color:var(--accent-line);background:var(--accent-soft);color:var(--accent-ink)}
+.pill.w{border-color:var(--warn-line);background:var(--warn-soft);color:var(--warn)}
+.pill.r{border-color:var(--neg-line);background:var(--neg-soft);color:var(--neg)}
+.pills{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pills .ar{color:var(--ink-3);font-size:13px}
+
+.bud{display:grid;gap:14px}
+.bud .track{height:40px;border-radius:var(--r);background:var(--sunk);border:1px solid var(--rule);position:relative;overflow:hidden}
+.bud .used{position:absolute;inset:0 auto 0 0;background:var(--ink-3);opacity:.35}
+.bud .f{position:absolute;top:0;bottom:0;background:var(--accent);transition:left .3s,width .3s,background .3s}
+.bud .mk{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--warn)}
+.bud .mk.full{background:var(--neg)}
+.bud .scale{position:relative;height:18px;font-size:12px;color:var(--ink-3)}
+.bud .scale span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+.bud input[type=range]{width:100%;accent-color:var(--accent)}
+.verdict{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:var(--r);font-size:15px;border:1px solid}
+.verdict.ok{background:var(--accent-soft);border-color:var(--accent-line);color:var(--accent-ink)}
+.verdict.warn{background:var(--warn-soft);border-color:var(--warn-line);color:var(--warn)}
+.verdict.block{background:var(--neg-soft);border-color:var(--neg-line);color:var(--neg)}
+.verdict b{color:inherit}
+.kv{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:14px;color:var(--ink-2)}
+.kv b{color:var(--ink);font-variant-numeric:tabular-nums}
+
+/* ---------- reversal ledger ---------- */
+.rev{font-size:15px}
+.rev .r{display:grid;grid-template-columns:90px minmax(0,1fr) 140px;gap:12px;padding:10px 12px;border-bottom:1px solid var(--rule);align-items:baseline}
+.rev .r:last-child{border-bottom:0}
+.rev .r .a{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rev .r.x .a{color:var(--neg)}
+.rev .r.x .d{text-decoration:line-through;text-decoration-color:var(--neg-line)}
+@media (max-width:560px){.rev .r{grid-template-columns:1fr auto}.rev .r .dt{grid-column:1/-1;font-size:13px;color:var(--ink-3)}}
+.dt{color:var(--ink-3);font-variant-numeric:tabular-nums}
+
+/* ---------- states ---------- */
+.states{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch}
+.state{flex:1;min-width:160px;background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:14px}
+section.s:nth-of-type(even) .state{background:var(--paper)}
+.state h3{font-size:17px;display:flex;align-items:center;gap:8px}
+.state p{font-size:14px;color:var(--ink-2);margin-top:6px}
+.sw{width:10px;height:10px;border-radius:50%;flex:none}
+
+/* ---------- phone ---------- */
+.tg-wrap{display:grid;grid-template-columns:300px minmax(0,1fr);gap:36px;align-items:start}
+@media (max-width:820px){.tg-wrap{grid-template-columns:1fr;justify-items:center}.tg-wrap>.stack{justify-self:stretch}}
+.phone{width:280px;max-width:100%;border-radius:34px;padding:10px;background:var(--ink);box-shadow:var(--shadow)}
+.screen{border-radius:26px;overflow:hidden;background:var(--paper);color:var(--ink)}
+.tg-top{background:var(--tg);color:#fff;padding:12px 14px 10px;font-size:14px;display:flex;justify-content:space-between;align-items:center}
+.tg-top b{font-weight:600}
+.scr{padding:14px;display:grid;gap:12px;font-size:13px}
+.scr .owed{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:12px}
+.scr .owed .k{color:var(--ink-3);font-size:12px}
+.scr .owed .v{font-family:var(--serif);font-size:24px;font-weight:600;color:var(--neg)}
+.scr .mini-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--rule);color:var(--ink-2)}
+.scr .inp{border:1px solid var(--rule-2);border-radius:8px;padding:8px 10px;color:var(--ink);background:var(--surface);font-variant-numeric:tabular-nums}
+.scr .btn{background:var(--accent);color:#fff;border-radius:8px;padding:10px;text-align:center;font-weight:600}
+:root[data-theme="dark"] .scr .btn{color:#0E110F}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .scr .btn{color:#0E110F}}
+.scr .hint{color:var(--ink-3);font-size:11.5px}
+.tg-tabs{display:flex;border-top:1px solid var(--rule);font-size:12px;color:var(--ink-3)}
+.tg-tabs span{flex:1;text-align:center;padding:10px 0}
+.tg-tabs span.on{color:var(--tg);font-weight:600}
+
+/* ---------- onboarding ---------- */
+.ob{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;counter-reset:ob}
+@media (max-width:820px){.ob{grid-template-columns:1fr}}
+.ob li{counter-increment:ob;display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px;background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:16px}
+section.s:nth-of-type(even) .ob li{background:var(--paper)}
+.ob li::before{content:counter(ob);font-family:var(--serif);font-weight:600;font-size:22px;color:var(--accent);line-height:1.1}
+.ob h3{font-size:17px}
+.ob p{font-size:14px;color:var(--ink-2);margin-top:4px}
+
+/* ---------- faq ---------- */
+details{border-bottom:1px solid var(--rule);padding-block:4px}
+details:first-of-type{border-top:1px solid var(--rule)}
+summary{cursor:pointer;list-style:none;padding:14px 32px 14px 0;font-weight:600;font-size:17px;position:relative}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";position:absolute;right:4px;top:10px;font-size:24px;color:var(--accent);font-weight:400;transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{color:var(--ink-2);padding-bottom:16px;max-width:70ch}
+
+footer{padding-block:40px 60px;color:var(--ink-3);font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between}
+</style>
+</head>
+<body>
+
+
+<header class="bar">
+  <div class="wrap">
+    <a class="mark" href="#top">Daftar<i></i></a>
+    <nav class="toc" id="toc" aria-label="Bo'limlar">
+      <a href="#rollar">Kim nima qiladi</a>
+      <a href="#oy">Bir oy</a>
+      <a href="#hisob">To'lov hisobi</a>
+      <a href="#taqsim">To'lov taqsimoti</a>
+      <a href="#kirim">Pul qayerdan keladi</a>
+      <a href="#xarajat">Xarajatlar</a>
+      <a href="#byudjet">Byudjet</a>
+      <a href="#yopish">Oy yopish</a>
+      <a href="#telegram">Ota-onalar</a>
+      <a href="#tarmoq">Bir nechta bog'cha</a>
+      <a href="#xavfsizlik">Xavfsizlik</a>
+      <a href="#boshlash">Boshlash</a>
+      <a href="#savollar">Savollar</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+<!-- ======================= HERO ======================= -->
+<div class="hero">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Bog'chalar uchun moliya tizimi</div>
+      <h1>Bog'changiz pulining <em>daftari</em> — har bir so'm qayerdan kelib, qayerga ketgani bilan</h1>
+      <p class="lede">Daftar ota-onalar to'lovini, homiylik mablag'larini, xarajatlarni va yillik byudjetni bir joyda yuritadi. Har oy kim qancha qarzdorligini o'zi hisoblaydi, pulni tasdiqsiz sarflashga yo'l qo'ymaydi va har bir yozuvning kim, qachon qilganini saqlaydi. Quyida tizim qanday ishlashini boshidan oxirigacha, misollar bilan ko'rsatamiz.</p>
+      <div class="facts">
+        <span class="chip"><b>O'zbek</b>, rus va ingliz tilida</span>
+        <span class="chip">Ota-onalar uchun <b>Telegram</b> ilova</span>
+        <span class="chip"><b>Click</b> orqali to'lov</span>
+        <span class="chip"><b>Excel / PDF</b> hisobotlar</span>
+        <span class="chip">Har bog'chaning <b>o'z bazasi</b></span>
+      </div>
+      <div class="dl">
+        <a class="p" href="Daftar-taqdimot.pptx" download>Taqdimot — PowerPoint</a>
+        <a class="s" href="Daftar-taqdimot.pdf" download>Taqdimot — PDF</a>
+        <span>17 slayd, so'zlovchi izohlari bilan</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="flow" role="img" aria-label="Pul oqimi: pul kiradi, pul turadi, pul chiqadi">
+        <div class="col">
+          <span class="k">1 · Pul kiradi</span>
+          <h3>Ota-onalar va homiylar</h3>
+          <ul>
+            <li>Kassaga naqd to'lov</li>
+            <li>Click orqali — telefondan</li>
+            <li>Bank o'tkazmasi (ko'chirma yuklanadi)</li>
+            <li>Homiylik, grant, subsidiya</li>
+          </ul>
+        </div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="col">
+          <span class="k">2 · Pul turadi</span>
+          <h3>Kassa va bank hisoblari</h3>
+          <ul>
+            <li>Har bir to'lov qaysi hisobga tushgani yoziladi</li>
+            <li>Qoldiq har doim ko'rinib turadi</li>
+            <li>Kassa minusga tushmaydi</li>
+          </ul>
+        </div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="col">
+          <span class="k">3 · Pul chiqadi</span>
+          <h3>Faqat tasdiqlangan zayavka bilan</h3>
+          <ul>
+            <li>Buxgalter zayavka tuzadi</li>
+            <li>Direktor tasdiqlaydi</li>
+            <li>Kassir to'laydi, hujjat biriktiradi</li>
+            <li>Byudjet bilan solishtiriladi</li>
+          </ul>
+        </div>
+      </div>
+      <div class="flow-foot"><span>Hammasi</span><span class="line"></span><span><b>hisobotlarga</b> va (bir nechta bog'cha bo'lsa) <b>tarmoq ko'rinishiga</b> tushadi</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================= ROLES ======================= -->
+<section class="s" id="rollar">
+  <div class="wrap">
+    <div class="s-head">
+      <div class="tag">Rollar</div>
+      <div>
+        <h2>Kim nima qiladi — va nimani qila olmaydi</h2>
+        <p>Har bir xodim tizimga o'z roli bilan kiradi. Pul bilan bog'liq muhim qadamlarni har doim <b>ikki xil odam</b> bajaradi: zayavkani tuzgan odam uni tasdiqlay olmaydi, tasdiqlagan odam esa uni to'lay olmaydi. Kichik jamoada bir kishi ham buxgalter, ham kassir bo'lishi mumkin — cheklov rolga emas, har bir aniq harakatga qo'yilgan.</p>
+      </div>
+    </div>
+    <div class="body stack">
+      <div class="tabs" role="tablist" aria-label="Rollar" id="roleTabs"></div>
+      <div id="rolePanel" class="role panel" role="tabpanel" aria-live="polite"></div>
+
+      <h3 style="font-size:20px;margin-top:14px">Kim qaysi ma'lumotni ko'radi</h3>
+      <p class="muted" style="margin-top:-8px">Bolalarning ismlari va ota-onalarning telefon raqamlari faqat o'sha bog'chaning direktori va buxgalteriga ko'rinadi. Qolganlar o'z ishi uchun keraklisini ko'radi, ortig'ini emas.</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Ma'lumot</th><th class="c">Direktor</th><th class="c">Buxgalter</th><th class="c">Kassir</th><th class="c">Bosh boshqaruvchi</th><th class="c">Super admin</th></tr></thead>
+          <tbody>
+            <tr><td>Qarzlar, to'lovchilar, bolalar ro'yxati, to'lovlar</td><td class="y">✓</td><td class="y">✓</td><td class="n">—</td><td class="n">—</td><td class="n">—</td></tr>
+            <tr><td>Davomat, homiylik, guruhlar va narxlar, bank ko'chirmasi</td><td class="y">✓</td><td class="y">✓</td><td class="n">—</td><td class="n">—</td><td class="n">—</td></tr>
+            <tr><td>Kassa va bank hisoblari, qoldiqlar</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="n">—</td><td class="n">—</td></tr>
+            <tr><td>Xarajat zayavkalari, xarajat turlari</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="n">—</td></tr>
+            <tr><td>Oylar (davrlar), byudjet, hisobotlar</td><td class="y">✓</td><td class="y">✓</td><td class="n">—</td><td class="y">✓</td><td class="n">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Bu cheklov faqat tugmalarni yashirish emas: server so'rovni o'zi rad etadi. Kimdir sahifa manzilini qo'lda yozsa ham, ruxsati bo'lmagan ma'lumotni ololmaydi.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= MONTH ======================= -->
+<section class="s" id="oy">
+  <div class="wrap">
+    <div class="s-head">
+      <div class="tag">Oy davomida</div>
+      <div>
+        <h2>Bog'chada bir oy qanday o'tadi</h2>
+        <p>Daftar oylar bilan ishlaydi. Har oy bir xil tartibda: oy boshida to'lovlar hisoblanadi, oy davomida pul keladi va sarflanadi, oy oxirida oy yopiladi va hisobot muzlatiladi.</p>
+      </div>
+    </div>
+    <div class="body">
+      <ol class="tl">
+        <li><span class="d">1-kun</span><span class="dot"></span><div><h3>Oylik hisob <span class="who-pill">Buxgalter</span></h3><p>Buxgalter «Qarzdorlik» sahifasidan oylik hisobni ishga tushiradi. Har bir bolaga guruh narxi bo'yicha to'lov hisoblanadi, chegirmalar qo'llanadi, o'tgan oyning sababli kelmagan kunlari uchun o'tkazma ayiriladi. Oy o'rtasida kelgan bolaga qolgan ish kunlari uchun darhol hisoblanadi.</p></div></li>
+        <li><span class="d">har kuni</span><span class="dot"></span><div><h3>To'lovlar keladi <span class="who-pill">Buxgalter</span> <span class="who-pill">Ota-ona</span></h3><p>Naqd pulni buxgalter kiritadi — tizim pul qaysi qarzga yozilishini oldindan ko'rsatadi va kvitansiya chiqaradi. Click orqali to'langan pul o'zi kvitansiyaga aylanadi. Bank ko'chirmasi yuklansa, tizim kirimlar kimniki ekanini taxmin qiladi, buxgalter tasdiqlaydi.</p></div></li>
+        <li><span class="d">har kuni</span><span class="dot"></span><div><h3>Kelmagan kunlar <span class="who-pill">Buxgalter</span> <span class="who-pill">Direktor</span></h3><p>Bolalar keldi deb hisoblanadi; faqat kelmagan kunlar yoziladi. Direktor sababli deb belgilagan kunlar uchun keyingi oy to'lovidan ayiriladi.</p></div></li>
+        <li><span class="d">belgilangan kunlar</span><span class="dot t"></span><div><h3>Qarz eslatmalari <span class="who-pill">Avtomatik</span></h3><p>Qarzi bor ota-onalarga Telegram orqali (Telegram ulanmagan bo'lsa — SMS orqali) eslatma boradi. Kuniga bir martadan ko'p emas, faqat kunduzi (odatda 10:00–19:00). Har bir eslatma yozib qo'yiladi — «menga aytilmagan» degan savolga javob bor.</p></div></li>
+        <li><span class="d">kerak bo'lganda</span><span class="dot w"></span><div><h3>Xarajatlar <span class="who-pill">Buxgalter</span> <span class="who-pill">Direktor</span> <span class="who-pill">Kassir</span></h3><p>Har bir xarajat zayavka bilan boshlanadi. Tizim uni byudjet bilan solishtiradi, direktor tasdiqlaydi, kassir to'laydi. Katta summalar bosh boshqaruvchiga o'tadi.</p></div></li>
+        <li><span class="d">oy oxiri</span><span class="dot"></span><div><h3>Oy yopiladi <span class="who-pill">Buxgalter</span> <span class="who-pill">Direktor</span></h3><p>Buxgalter yopishni boshlaydi, direktor tasdiqlaydi. Shundan keyin o'sha oyga to'lov, hisob yoki xarajat yozib bo'lmaydi, hisobot esa o'sha holatda saqlanib qoladi.</p></div></li>
+        <li style="padding-bottom:0"><span class="d">istalgan payt</span><span class="dot"></span><div><h3>Hisobotlar <span class="who-pill">Direktor</span> <span class="who-pill">Bosh boshqaruvchi</span></h3><p>Ota-onalar qarzi, homiylik mablag'lari, byudjet ijrosi (reja va fakt) — har biri Excel yoki PDF ga chiqariladi. Ochiq oy joriy holatda, yopilgan oy yopilgan kundagidek ko'rsatiladi.</p></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= CALC ======================= -->
+<section class="s" id="hisob">
+  <div class="wrap">
+    <div class="s-head">
+      <div class="tag">To'lov hisobi</div>
+      <div>
+        <h2>Oylik to'lov qanday hisoblanadi</h2>
+        <p>Narx bolaga emas, guruh turiga belgilanadi. Bolaning to'lov shartlari (chegirmalar) faqat shu narxdan farqini saqlaydi. Quyidagi raqamlarni o'zgartirib, tizim qanday hisoblashini o'zingiz ko'ring.</p>
+      </div>
+    </div>
+    <div class="body stack">
+      <div class="calc">
+        <div class="in">
+          <div class="fld"><label for="cT">Guruhning oylik narxi (tarif), so'm</label><input id="cT" type="number" min="0" step="10000" value="1500000"></div>
+          <div class="row2">
+            <div class="fld"><label for="cW">Oydagi ish kunlari</label><input id="cW" type="number" min="1" max="31" value="21"><span class="h">Bog'changiz kalendari bo'yicha</span></div>
+            <div class="fld"><label for="cE">Bola ro'yxatda bo'lgan ish kunlari</label><input id="cE" type="number" min="0" max="31" value="21"><span class="h">Oy o'rtasida kelsa — kamroq</span></div>
+          </div>
+          <div class="row3">
+            <div class="fld"><label for="cS">Aka-uka, %</label><input id="cS" type="number" min="0" max="100" value="15"></div>
+            <div class="fld"><label for="cR">Tavsiya, %</label><input id="cR" type="number" min="0" max="100" value="10"></div>
+            <div class="fld"><label for="cI">Alohida, %</label><input id="cI" type="number" min="0" max="100" value="0"></div>
+          </div>
+          <div class="row2">
+            <div class="fld"><label for="cF">Qat'iy chegirma, so'm</label><input id="cF" type="number" min="0" step="10000" value="200000"></div>
+            <div class="fld"><label for="cX">Sababli kelmagan kunlar</label><input id="cX" type="number" min="0" max="31" value="3"><span class="h">Direktor tasdiqlagan</span></div>
+          </div>
+        </div>
+        <div class="out">
+          <div class="box-h">Shu oy uchun hisoblanadi</div>
+          <div class="ledger-lines" id="cLines"></div>
+          <div class="total"><span class="lbl">Hisoblangan summa</span><span class="v" id="cTotal">—</span></div>
+          <div class="credit" id="cCredit"></div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="panel">
+          <h3>Chegirmalar qoidasi</h3>
+          <p>Foizli chegirmalar <b>qo'shiladi</b>, ustma-ust ko'paytirilmaydi: ota-onaga «15% va 10%» deyilsa, u 25% kutadi — tizim ham 25% hisoblaydi. Jami foiz <b>50% dan oshmaydi</b>. Qat'iy (so'mli) chegirma foizdan keyin ayiriladi. Natija hech qachon manfiy bo'lmaydi.</p>
+          <p>Chegirmalar oilaga bog'langan: tavsiya chegirmasi boshqa oilani olib kelgan oilaga 12 oy davomida beriladi, hatto u oila tarmoqning boshqa bog'chasiga kelgan bo'lsa ham.</p>
+        </div>
+        <div class="panel">
+          <h3>Yaxlitlash va jarimalar</h3>
+          <p>Summa bir marta, oxirida, <b>1 so'mgacha pastga</b> yaxlitlanadi — har kunni alohida yaxlitlash oy oxirida xato to'playdi. Barcha summalar tiyingacha butun son sifatida saqlanadi, shuning uchun kasr xatolari bo'lmaydi.</p>
+          <p>Kechikkan to'lov uchun <b>hech qanday jarima yoki foiz</b> qo'shilmaydi. Qarz shunchaki qarz bo'lib turadi.</p>
+        </div>
+        <div class="panel">
+          <h3>Sababli kelmagan kunlar</h3>
+          <p>Joriy oyning to'lovi kamaymaydi — u to'liq qoladi, o'tkazma esa <b>keyingi oy</b> to'lovidan ayiriladi. Shunda bog'cha qancha daromaddan voz kechgani hisobotda ko'rinib turadi. O'tkazma bola to'lagan stavkada (foizli chegirmalar bilan) hisoblanadi; qat'iy chegirma oyiga bir marta beriladi, shuning uchun unga qo'shilmaydi.</p>
+          <p>O'tkazma keyingi oy to'lovidan katta bo'lsa, qolgani yo'qolmaydi — undan keyingi oyga o'tadi.</p>
+        </div>
+        <div class="panel">
+          <h3>Bola ketsa</h3>
+          <p>Bola ketgan kunigacha, ish kunlari bo'yicha hisoblanadi. Ketish haqida <b>14 kun oldin</b> aytilishi kerak; kechroq aytilsa, butun oy uchun hisoblanadi.</p>
+          <p>Ketgan bola ro'yxatda qoladi, tarixi va qarzi saqlanadi. Tarmoqdagi boshqa bog'chaga o'tsa, qarz birinchi bog'chada qoladi — ikkinchisining bu pulga da'vosi yo'q.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= ALLOCATION ======================= -->
+<section class="s" id="taqsim">
+  <div class="wrap">
+    <div class="s-head">
+      <div class="tag">To'lov taqsimoti</div>
+      <div>
+        <h2>To'lov qaysi qarzga yoziladi</h2>
+        <p>Pul <b>eng eski qarzdan boshlab</b> yopiladi. Buxgalter to'lovni saqlashdan oldin taqsimotni qatorma-qator ko'radi. Boshqacha taqsimlash kerak bo'lsa (masalan, ota-ona aynan noyabr uchun to'layotganini aytsa), buxgalter uni o'zgartiradi — lekin sababini yozishi shart.</p>
+      </div>
+    </div>
+    <div class="body">
+      <div class="panel alloc">
+        <div class="ctl">
+          <div class="fld"><label for="aAmt">Ota-ona to'lagan summa, so'm</label><input id="aAmt" type="number" min="0" step="50000" value="2000000"></div>
+          <div class="presets" aria-label="Tayyor summalar">
+            <button type="button" data-v="500000">500 000</button>
+            <button type="button" data-v="2000000">2 000 000</button>
+            <button type="button" data-v="2300000">2 300 000</button>
+            <button type="button" data-v="3000000">3 000 000</button>
+          </div>
+        </div>
+        <p class="muted">Misol: ota-onaning oktabr uchun 800 000 so'm va noyabr uchun 1 500 000 so'm qarzi bor.</p>
+        <div id="aRows" class="stack" style="gap:10px"></div>
+        <div id="aOver"></div>
+      </div>
+      <p class="note" style="margin-top:16px">Qarz har doim <b>qaysi oy uchun</b> ekani bilan ko'rsatiladi. O'tgan oydan qolgan qarz keyingi oyning summasiga qo'shilib ketmaydi — «oktabrdan 300 000 qarz» doim alohida ko'rinadi.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= INCOME ======================= -->
+<section class="s" id="kirim">
+  <div class="wrap">
+    <div class="s-head">
+      <div class="tag">Kirim</div>
+      <div>
+        <h2>Pul qayerdan keladi</h2>
+        <p>Pul to'rt yo'l bilan keladi. Qaysi yo'l bo'lmasin, oxirida u bir xil qoidalar bilan qarzlarga yoziladi va qaysi hisobga (kassa yoki bank) tushgani qayd etiladi.</p>
+      </div>
+    </div>
+    <div class="body grid2">
+      <div class="panel">
+        <h3>Kassaga naqd</h3>
+        <p>Buxgalter to'lovchini tanlaydi, summani kiritadi. Tizim taqsimotni ko'rsatadi, saqlangach kvitansiya chiqadi. Kvitansiyada to'lovchining <b>7 xonali hisob raqami</b> bor.</p>
+      </div>
+      <div class="panel">
+        <h3>Click orqali</h3>
+        <p>Ota-ona Click ilovasida yoki bog'chaning Telegram botida hisob raqamini kiritib to'laydi. Tizim raqamni pul yechilishidan <b>oldin</b> tekshiradi: bitta raqam xato yozilsa ham, bunday to'lovchi topilmaydi va ota-onaga darhol aytiladi. To'lov o'zi kvitansiyaga aylanadi.</p>
+        <p>Agar oy yopilgan bo'lsa yoki to'lovchini aniqlab bo'lmasa, pul «Kutilayotgan to'lovlar» ro'yxatida turadi — buxgalter uni to'g'ri to'lovchiga yozadi. Pul hech qachon taxmin bilan yozilmaydi.</p>
+      </div>
+      <div class="panel">
+        <h3>Bank o'tkazmasi</h3>
+        <p>Bank-mijoz dasturidan ko'chirma (1C almashuv fayli yoki Excel) yuklanadi. Tizim har bir kirimni o'qiydi va to'lov maqsadidagi hisob raqami yoki ism bo'yicha kimniki ekanini taxmin qiladi.</p>
+        <p>Buxgalter tasdiqlamaguncha hech narsa yozilmaydi: har bir qator — to'lov, homiylik yoki «chetga qo'yish» (sababi bilan). Bir ko'chirmani ikki marta yuklash hech narsa qo'shmaydi.</p>
+      </div>
+      <div class="panel">
+        <h3>Homiylik, grant, subsidiya</h3>
+        <p>Ota-onadan kelmagan pul alohida yoziladi: kimdan, qancha, qachon. Maqsadli mablag'ga <b>qaysi xarajat turlariga sarflash mumkinligi</b> belgilanadi — masalan, faqat o'yinchoqlar va jihozlarga.</p>
+        <p>Tizim buni zayavkada tekshiradi va boshqa maqsadga sarflashni to'xtatadi. Shunda homiyga beriladigan hisobotga ishonsa bo'ladi.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= EXPENSES ======================= -->
+<section class="s" id="xarajat">
+  <div class="wrap">
+    <div class="s-head">
+      <div class="tag">Xarajatlar</div>
+      <div>
+        <h2>Pul qanday sarflanadi</h2>
+        <p>Zayavkasiz bir so'm ham chiqmaydi. Zayavkada summa, xarajat turi, maqsad, sana va (kerak bo'lsa) qaysi homiylik mablag'idan to'lanishi ko'rsatiladi. Har bir qadam kim, qachon qilgani bilan zayavka tarixida qoladi.</p>
+      </div>
+    </div>
+    <div class="body stack">
+      <div class="steps">
+        <div class="step"><span class="n">1</span><h3>Qoralama</h3><p>Zayavka tuziladi, hujjatlar biriktiriladi. Bu bosqichda bemalol o'zgartiriladi.</p><span class="by">Buxgalter</span></div>
+        <div class="step"><span class="n">2</span><h3>Yuborish</h3><p>Tizim byudjet ta'sirini ko'rsatadi: reja, band qilingan, shu zayavkadan keyin.</p><span class="by">Buxgalter</span></div>
+        <div class="step"><span class="n">3</span><h3>Tasdiqlash</h3><p>Direktor o'z limiti doirasida tasdiqlaydi yoki sabab bilan rad etadi. Limitdan kattasi bosh boshqaruvchiga o'tadi.</p><span class="by">Direktor · Bosh boshqaruvchi</span></div>
+        <div class="step"><span class="n">4</span><h3>To'lash</h3><p>Kassir pulni beradi yoki o'tkazadi, hujjatni biriktiradi. Bir necha qismda to'lash mumkin, lekin tasdiqlangandan ortiq emas.</p><span class="by">Kassir</span></div>
+        <div class="step"><span class="n">5</span><h3>Hisobotda</h3><p>Xarajat byudjet ijrosiga, kassa qoldig'iga va (bo'lsa) homiylik hisobotiga tushadi.</p><span class="by">Avtomatik</span></div>
+      </div>
+
+      <div class="pills" aria-label="Zayavka holatlari">
+        <span class="muted">Holatlar:</span>
+        <span class="pill">Qoralama</span><span class="ar">→</span>
+        <span class="pill">Yuborilgan</span><span class="ar">→</span>
+        <span class="pill w">Uzatilgan</span><span class="ar">→</span>
+        <span class="pill g">Tasdiqlangan</span><span class="ar">→</span>
+        <span class="pill g">Qisman to'langan</span><span class="ar">→</span>
+        <span class="pill g">To'langan</span>
+        <span class="ar">·</span><span class="pill r">Rad etilgan</span><span class="pill">Bekor qilingan</span><span class="pill r">Storno</span>
+      </div>
+
+      <div class="panel bud">
+        <div>
+          <h3>Byudjet nazorati — sinab ko'ring</h3>
+          <p>Misol: «Oziq-ovqat» turi bo'yicha oylik reja <b class="num">20 000 000</b> so'm, shundan <b class="num">14 500 000</b> so'm allaqachon band. Direktorning tasdiqlash limiti <b class="num">5 000 000</b> so'm. Yangi zayavka summasini suring:</p>
+        </div>
+        <div class="fld"><label for="bAmt">Yangi zayavka: <span id="bAmtTxt" class="num"></span></label><input id="bAmt" type="range" min="0" max="9000000" step="100000" value="2000000"></div>
+        <div>
+          <div class="track" id="bTrack"><div class="used" id="bUsed"></div><div class="f" id="bFill"></div><div class="mk" style="left:80%"></div><div class="mk full" style="left:calc(100% - 2px)"></div></div>
+          <div class="scale"><span style="left:0;transform:none">0</span><span style="left:80%">80% — ogohlantirish</span><span style="left:100%;transform:translateX(-100%)">100% — blok</span></div>
+        </div>
+        <div class="kv" id="bKv"></div>
+        <div id="bVerdict"></div>
+      </div>
+
+      <div class="grid3">
+        <div class="panel"><h3>Ikki marta tekshiriladi</h3><p>Byudjet tasdiqlashda va to'lash paytida qayta tekshiriladi — oradagi vaqtda boshqa xarajatlar tushgan bo'lishi mumkin.</p></div>
+        <div class="panel"><h3>Blokni kim ochadi</h3><p>100% dan oshgan byudjet blokini direktor o'zi ocha olmaydi: cheklangan odam cheklovni belgilamaydi. Faqat bosh boshqaruvchi, sababini yozib, ochadi — bu yozib qo'yiladi.</p></div>
+        <div class="panel"><h3>Kassa minusga tushmaydi</h3><p>Kassada yo'q pulni tizim to'latmaydi — haqiqiy kassa ham buni qila olmaydi. Bank hisobi uchun esa faqat ogohlantiradi.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= BUDGET ======================= -->
+<section class="s" id="byudjet">
+  <div class="wrap">
+    <div class="s-head">
+      <div class="tag">Byudjet</div>
+      <div>
+        <h2>Yillik byudjet: reja, versiya va tasdiq</h2>
+        <p>Byudjet — yil bo'yicha oyma-oy va xarajat turlari bo'yicha reja (majburiy, zaxira, maqsadli, kapital xarajatlar). Har bir zayavka shu reja bilan solishtiriladi, hisobotlar esa «reja va fakt» farqini ko'rsatadi.</p>
+      </div>
+    </div>
+    <div class="body stack">
+      <div class="states">
+        <div class="state"><h3><span class="sw" style="background:var(--ink-3)"></span>Qoralama</h3><p>Buxgalter rejani tuzadi.</p></div>
+        <div class="state"><h3><span class="sw" style="background:var(--warn)"></span>Yuborilgan</h3><p>Direktor ko'rib chiqib, tasdiqlashga yuboradi (yoki qaytaradi).</p></div>
+        <div class="state"><h3><span class="sw" style="background:var(--accent)"></span>Tasdiqlangan</h3><p>Bosh boshqaruvchi tasdiqlaydi yoki rad etadi.</p></div>
+        <div class="state"><h3><span class="sw" style="background:var(--rule-2)"></span>Almashtirilgan</h3><p>Yangi versiya tasdiqlangach, eskisi o'qish uchun qoladi.</p></div>
+      </div>
+      <div class="grid2">
+        <div class="panel"><h3>Tasdiqlangan reja o'zgarmaydi</h3><p>O'zgartirish kerak bo'lsa, yangi versiya tuziladi va tanlangan oydan kuchga kiradi. O'tgan oylar eski reja bo'yicha qoladi. Shunda yil oxirida «reja bajarildi, chunki reja qayta yozildi» degan holat bo'lmaydi — hisobot ham dastlabki, ham joriy reja bilan solishtira oladi.</p></div>
+        <div class="panel"><h3>Nega bosh boshqaruvchi tasdiqlaydi</h3><p>Byudjet direktorning xarajatlarini cheklaydi. Cheklov ostidagi odam cheklovni o'zi belgilamasligi kerak — shuning uchun rejani tarmoq darajasida bosh boshqaruvchi tasdiqlaydi.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= CLOSE + REVERSAL ======================= -->
+<section class="s" id="yopish">
+  <div class="wrap">
+    <div class="s-head">
+      <div class="tag">Oy yopish · Storno</div>
+      <div>
+        <h2>Yopilgan oy o'zgarmaydi, xato esa o'chirilmaydi</h2>
+        <p>Moliyada eng muhim narsa — tarixga ishonch. Shuning uchun Daftarda hech bir to'lov yoki xarajat o'chirilmaydi va tahrir qilinmaydi. Xato <b>storno</b> (bekor qiluvchi yozuv) bilan tuzatiladi, va ikkala yozuv ham tarixda qoladi.</p>
+      </div>
+    </div>
+    <div class="body stack">
+      <div class="states">
+        <div class="state"><h3><span class="sw" style="background:var(--accent)"></span>Ochiq</h3><p>To'lovlar, kelmagan kunlar, xarajatlar yoziladi.</p></div>
+        <div class="state"><h3><span class="sw" style="background:var(--warn)"></span>Yopilmoqda</h3><p>Buxgalter yopishni boshladi. Direktor tasdiqlaydi yoki qaytaradi. Bitta odam ikkalasini qila olmaydi.</p></div>
+        <div class="state"><h3><span class="sw" style="background:var(--ink)"></span>Yopilgan</h3><p>Hisobot muzlatiladi. Oylar tartib bilan yopiladi.</p></div>
+        <div class="state"><h3><span class="sw" style="background:var(--neg)"></span>Qayta ochish</h3><p>Faqat bosh boshqaruvchi, sababini yozib, va faqat keyingi oy hali ochiq bo'lsa.</p></div>
+      </div>
+
+      <div>
+        <div class="box-h">Misol: buxgalter 350 000 o'rniga 530 000 deb yozib qo'ydi</div>
+        <div class="tbl-wrap rev">
+          <div class="r x"><span class="dt">12.11</span><span class="d">Kvitansiya № 1042 · Karimova D. · naqd</span><span class="a">+530 000 so'm</span></div>
+          <div class="r"><span class="dt">12.11</span><span>Storno № 1042 · direktor · sabab: «summa xato kiritilgan»</span><span class="a" style="color:var(--neg)">−530 000 so'm</span></div>
+          <div class="r"><span class="dt">12.11</span><span>Kvitansiya № 1043 · Karimova D. · naqd</span><span class="a" style="color:var(--accent)">+350 000 so'm</span></div>
+        </div>
+        <p class="muted" style="margin-top:8px">Bekor qilingan kvitansiya ochilganda «bu to'lov bekor qilingan» deb ko'rsatadi. Qarz va qoldiq to'g'ri, tarix esa to'liq. Yopilgan oydagi xato keyingi ochiq oyda tuzatiladi.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= TELEGRAM ======================= -->
+<section class="s" id="telegram">
+  <div class="wrap">
+    <div class="s-head">
+      <div class="tag">Ota-onalar</div>
+      <div>
+        <h2>Ota-onalar uchun — Telegram ichida</h2>
+        <p>Ota-onalar parol eslab qolmaydi va hech narsa o'rnatmaydi. Bog'changizning Telegram boti ichida kichik ilova ochiladi: qancha qarz, nima hisoblangan, qachon nima to'langan — va shu yerning o'zidan Click orqali to'lash.</p>
+      </div>
+    </div>
+    <div class="body tg-wrap">
+      <div class="phone" aria-label="Telegram mini ilovasi ko'rinishi (namuna)">
+        <div class="screen">
+          <div class="tg-top"><b>Daftar</b><span>Quyosh bog'chasi</span></div>
+          <div class="scr">
+            <div class="owed"><div class="k">Qarzdorlik</div><div class="v num">1 100 000 so'm</div></div>
+            <div>
+              <div class="mini-row"><span>Oktabr</span><span class="num">300 000</span></div>
+              <div class="mini-row"><span>Noyabr</span><span class="num">800 000</span></div>
+            </div>
+            <div class="inp">To'lov summasi: 1 100 000</div>
+            <div class="btn">To'lash</div>
+            <div class="hint">To'lov Click orqali o'tadi. Click ilovasida hisob raqamingiz: 4021378</div>
+          </div>
+          <div class="tg-tabs"><span class="on">Asosiy</span><span>Tarix</span><span>Sozlamalar</span></div>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="panel"><h3>Qanday ulanadi</h3><p>Buxgalter to'lovchi sahifasidan maxsus havola beradi. Havola <b>bir marta</b> ishlaydi va bir hafta amal qiladi. Ota-ona uni ochadi — shu bilan uning Telegrami to'lovchiga bog'lanadi. Bir to'lovchiga bir nechta Telegram (masalan, ota va ona) ulanishi mumkin; buxgalter istalganini uzib qo'yadi.</p></div>
+        <div class="panel"><h3>Ota-ona nimani ko'radi</h3><p>Faqat o'z farzandlari: hisoblangan summalar, qolgan qarz, to'lovlar tarixi, kvitansiyalar (bekor qilingan bo'lsa, bu ham ko'rinadi), oldindan to'langan summa. Boshqa oilalar yoki bog'chaning boshqa ma'lumotlari ko'rinmaydi.</p></div>
+        <div class="panel"><h3>Eslatmalar</h3><p>Qarz bo'lsa, eslatma shu Telegramga keladi; ulanmagan bo'lsa — SMS. Ota-ona istasa, eslatmalarni to'xtatadi. Buxgalter har bir to'lovchiga qachon, qaysi yo'l bilan eslatma ketganini ko'radi.</p></div>
+        <p class="note">Direktor ham shu botdan telefonida «kim qarzdor» va «bugun nima keldi» ni ko'ra oladi. Lekin Telegram orqali ochilgan xodim sessiyasi <b>faqat o'qiydi</b>: to'lov qabul qilish, storno, oy yopish — faqat parol bilan veb-ilovada. Telegram akkaunti o'g'irlansa ham, undan bir so'm ham ko'chirib bo'lmaydi.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= NETWORK ======================= -->
+<section class="s" id="tarmoq">
+  <div class="wrap">
+    <div class="s-head">
+      <div class="tag">Tarmoq</div>
+      <div>
+        <h2>Bir nechta bog'changiz bo'lsa</h2>
+        <p>Har bir bog'cha alohida yuritiladi: o'z bazasi, o'z xodimlari, o'z bot va Click ulanishi. Egasi yoki bosh boshqaruvchi esa hammasini bitta «Tarmoq» sahifasida ko'radi.</p>
+      </div>
+    </div>
+    <div class="body grid3">
+      <div class="panel"><h3>Umumiy ko'rinish</h3><p>Har bir bog'cha bo'yicha va jami: hisoblangan, undirilgan, qarz, homiylik mablag'lari va byudjet ijrosi, oylar bo'yicha trend. Excel yoki PDF ga chiqariladi.</p></div>
+      <div class="panel"><h3>Bolalarning ismi ko'rinmaydi</h3><p>Tarmoq sahifasi faqat bog'cha darajasidagi jamlanmalarni ko'rsatadi. Bolalar va ota-onalar ma'lumoti o'z bog'chasidan chiqmaydi.</p></div>
+      <div class="panel"><h3>Bir necha soniya kechikish</h3><p>Raqamlar har bir bog'cha yuborgan hodisalardan yig'iladi. Bog'chada kiritilgan to'lov tarmoq sahifasida bir necha soniyadan keyin paydo bo'ladi. Markaz hech qachon bog'cha ma'lumotini o'zgartirmaydi.</p></div>
+      <div class="panel"><h3>Bitta parol</h3><p>Bir nechta bog'chani nazorat qiladigan odam hammasiga bitta login bilan kiradi.</p></div>
+      <div class="panel"><h3>Bog'chalar bir-biridan ajratilgan</h3><p>Bir bog'chaning dasturidagi xato boshqa bog'chaning bazasini ocha olmaydi — har birining alohida bazasi va alohida kaliti bor.</p></div>
+      <div class="panel"><h3>Bola boshqa bog'chaga o'tsa</h3><p>Birinchi bog'chada «ketdi» deb belgilanadi (qarzi o'sha yerda qoladi), ikkinchisida yangidan qabul qilinadi.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= SECURITY ======================= -->
+<section class="s" id="xavfsizlik">
+  <div class="wrap">
+    <div class="s-head">
+      <div class="tag">Xavfsizlik</div>
+      <div>
+        <h2>Ma'lumotlaringiz qanday himoyalanadi</h2>
+        <p>Oddiy tilda: kim kira oladi, nima yozib qo'yiladi va biror narsa buzilsa nima bo'ladi.</p>
+      </div>
+    </div>
+    <div class="body grid2">
+      <div class="panel"><h3>Kirish</h3><p>Har bir xodimga vaqtinchalik parol beriladi; birinchi kirishda u o'z parolini o'rnatadi. Parolni taxmin qilishga urinishlar bloklanadi. Tarmoq darajasidagi rollar (bosh boshqaruvchi, super admin) qo'shimcha ravishda telefondagi autentifikator kodi bilan kiradi.</p></div>
+      <div class="panel"><h3>Xodim ketsa</h3><p>Direktor uning hisobini sabab bilan o'chiradi — bu bir daqiqa ichida kuchga kiradi, hatto u ayni paytda tizimda bo'lsa ham. U qilgan ishlar tarixi saqlanadi.</p></div>
+      <div class="panel"><h3>Hamma narsa yozib boriladi</h3><p>Har bir to'lov, xarajat, tasdiq, rad etish, storno, blokni ochish va oy yopishda kim, qachon va nima uchun qilgani saqlanadi. O'chirish yo'q — faqat bekor qiluvchi yozuv.</p></div>
+      <div class="panel"><h3>Qoidalar bazaning o'zida</h3><p>«Tasdiqlovchi — tuzuvchi emas», «taqsimot to'lovdan oshmaydi» kabi eng muhim qoidalar faqat dasturda emas, ma'lumotlar bazasining o'zida ham tekshiriladi. Dasturdagi xato ham ularni chetlab o'tolmaydi.</p></div>
+      <div class="panel"><h3>Zaxira nusxa</h3><p>Baza uzluksiz zaxiralanadi va istalgan daqiqadagi holatga qaytarish mumkin. Zaxira baza serveridan tashqarida, shifrlangan holda saqlanadi, va har hafta tiklash sinab ko'riladi.</p></div>
+      <div class="panel"><h3>Click to'lovlari</h3><p>Click har bir so'rovda imzo bilan o'zini isbotlaydi. Bir to'lov ikki marta kvitansiya bo'lmaydi. Click bilan har bir muloqot saqlanadi — bahsli to'lov shu yozuv bo'yicha aniqlanadi.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= ONBOARDING ======================= -->
+<section class="s" id="boshlash">
+  <div class="wrap">
+    <div class="s-head">
+      <div class="tag">Ishni boshlash</div>
+      <div>
+        <h2>Bog'changizni Daftarga qanday o'tkazamiz</h2>
+        <p>Eski daftar yoki Excel jadvalingizdan to'liq ko'chib o'tish tartibi. Har bir qadamda tizim avval nima yozilishini ko'rsatadi, siz tasdiqlaganingizdan keyingina yozadi.</p>
+      </div>
+    </div>
+    <div class="body">
+      <ol class="ob">
+        <li><div><h3>Bog'cha sozlanadi</h3><p>Nomi, o'quv yili qaysi oylar, ta'til davrlari (guruh turi bo'yicha), ish kunlari kalendari (shanba ishlaydimi), direktorning tasdiqlash limiti.</p></div></li>
+        <li><div><h3>Xodimlar qo'shiladi</h3><p>Direktor, buxgalter, kassir — har biriga vaqtinchalik parol. Birinchi kirishda har kim o'z parolini qo'yadi.</p></div></li>
+        <li><div><h3>Guruhlar va narxlar</h3><p>Guruhlar va har bir guruh turining oylik narxi, qaysi oydan amal qilishi bilan. Narxni direktor belgilaydi.</p></div></li>
+        <li><div><h3>Kassa va bank hisoblari</h3><p>Direktor kassa va bank hisoblarini ochadi, bugungi qoldiqni kiritadi.</p></div></li>
+        <li><div><h3>Bolalar va to'lovchilar — Excel'dan</h3><p>Shablon yuklab olinadi (unda sizning guruhlaringiz bor), to'ldirib yuklanadi. Tizim har bir qatorni tekshiradi; birorta xato bo'lsa, hech narsa yozilmaydi — xatolar ko'rsatiladi.</p></div></li>
+        <li><div><h3>Eski qarzlar</h3><p>Daftarga o'tishdan oldingi qarzlar qaysi oy uchun ekani bilan kiritiladi (bilinmasa — bitta umumiy summa). Avval oldindan ko'rib chiqiladi.</p></div></li>
+        <li><div><h3>Click va Telegram bot</h3><p>Bog'changizning Click kalitlari va Telegram boti ulanadi. Keyin buxgalter ota-onalarga havola tarqatadi.</p></div></li>
+        <li><div><h3>Birinchi oylik hisob</h3><p>Buxgalter birinchi oylik hisobni ishga tushiradi — shu kundan boshlab qarzlar, to'lovlar va eslatmalar avtomatik yuradi.</p></div></li>
+      </ol>
+      <p class="note ok" style="margin-top:16px">Har bir sahifaning yonida qisqa yordam matni bor, va «Qo'llanma» bo'limida har bir ekran batafsil tushuntirilgan — xodimlar birinchi kundan mustaqil ishlay oladi.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= FAQ ======================= -->
+<section class="s" id="savollar">
+  <div class="wrap">
+    <div class="s-head">
+      <div class="tag">Savollar</div>
+      <div><h2>Ko'p beriladigan savollar</h2></div>
+    </div>
+    <div class="body">
+      <details><summary>Xato kiritilgan to'lovni o'chirsa bo'ladimi?</summary><p>Yo'q. Direktor uni storno qiladi — bekor qiluvchi yozuv qo'shiladi, keyin to'g'ri to'lov kiritiladi. Tarixda ikkalasi ham qoladi, qarz va kassa qoldig'i esa to'g'ri bo'ladi.</p></details>
+      <details><summary>Ota-ona kechiksa, jarima hisoblanadimi?</summary><p>Yo'q. Tizim hech qachon jarima yoki foiz qo'shmaydi. Qarz o'z oyi bilan turadi, ota-onaga esa eslatma boradi.</p></details>
+      <details><summary>Bola oy o'rtasida kelsa-chi?</summary><p>Shu oyning qolgan ish kunlari uchun darhol hisoblanadi: narx ÷ oydagi ish kunlari × qolgan ish kunlari.</p></details>
+      <details><summary>Bolaning to'lovini ikki kishi bo'lib to'lasa?</summary><p>Tizimda har bir bola uchun bitta javobgar to'lovchi bo'ladi (masalan, onasi yoki buvisi). Pulni kim olib kelishidan qat'iy nazar, to'lov shu to'lovchiga yoziladi. To'lovchini keyinchalik sanasi bilan almashtirish mumkin, tarix saqlanadi.</p></details>
+      <details><summary>Narxni oshirsak, eski oylar ham o'zgaradimi?</summary><p>Yo'q. Yangi narx tanlangan oydan kuchga kiradi. Allaqachon hisoblangan oyning narxini o'zgartirib bo'lmaydi.</p></details>
+      <details><summary>Chegirmani o'zgartirsak, qachondan amal qiladi?</summary><p>Belgilangan sanadan. Agar o'sha oy allaqachon hisoblangan bo'lsa, tizim chegirmani keyingi oyga suradi va buni aytadi. Majburan o'sha oydan qo'llash kerak bo'lsa — buni faqat direktor qiladi: eski hisob storno qilinib, yangisi yoziladi.</p></details>
+      <details><summary>Yopilgan oyda xato topsak nima qilamiz?</summary><p>Tuzatish keyingi ochiq oyda qilinadi. Juda zarur bo'lsa, bosh boshqaruvchi sabab yozib oyni qayta ochishi mumkin — lekin faqat keyingi oy hali yopilmagan bo'lsa.</p></details>
+      <details><summary>Ota-ona Click'da hisob raqamini xato yozsa?</summary><p>Raqamning oxirgi raqami tekshiruv raqami. Bitta raqam xato yoki ikki qo'shni raqam almashsa, deyarli har doim bunday to'lovchi topilmaydi va Click to'lovni pul yechilishidan oldin rad etadi.</p></details>
+      <details><summary>Turniket (Hikvision) bilan davomat ulanadimi?</summary><p>Hozir kelmagan kunlar qo'lda kiritiladi. Turniket bilan ulanish rejada: u faqat kelmagan kunlarni <b>taklif qiladi</b>, qaror esa buxgalter va direktorda qoladi — kartani bosishni unutgan bola o'z-o'zidan chegirmaga aylanib qolmasligi uchun.</p></details>
+      <details><summary>Qaysi tillarda ishlaydi?</summary><p>O'zbek (lotin), rus va ingliz. Har bir xodim o'z tilini tanlaydi, tizim uni eslab qoladi.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Daftar — bog'chalar va maktablar tarmog'i uchun moliyaviy nazorat</span>
+    <span>Sahifadagi ismlar va summalar — misol uchun</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var NB = " ";
+  function som(n){ n = Math.round(n); var s = Math.abs(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, NB); return (n<0?"−":"") + s + " so'm"; }
+  function val(id){ var v = parseFloat(document.getElementById(id).value); return isFinite(v) ? v : 0; }
+
+  /* ---------- roles ---------- */
+  var ROLES = [
+    {k:"dir", name:"Direktor", sub:"Bitta bog'cha rahbari",
+      yes:["Guruh narxlarini belgilaydi","Kelmagan kunni «sababli» deb tasdiqlaydi (oy yopilguncha)","Zayavkalarni o'z limiti doirasida tasdiqlaydi yoki rad etadi","Oy yopishni tasdiqlaydi","Byudjetni bosh boshqaruvchiga tasdiqlashga yuboradi","Kassa va bank hisoblarini ochadi, boshlang'ich qoldiqni kiritadi","Xato to'lov yoki hisobni storno qiladi","Xodim qo'shadi, hisobini o'chiradi va yoqadi","Barcha hisobotlarni ko'radi va yuklab oladi"],
+      no:["O'zi tuzgan zayavkani tasdiqlash","O'z byudjetini tasdiqlash yoki byudjet blokini ochish","Yopilgan oyni qayta ochish","Oy yopishni ham boshlab, ham tasdiqlash"]},
+    {k:"acc", name:"Buxgalter", sub:"Kundalik moliyaviy ish",
+      yes:["Ota-onadan to'lov qabul qiladi, kvitansiya chiqaradi","Oy boshida oylik hisobni ishga tushiradi","Kelmagan kunlarni kiritadi","Bolalarni qabul qiladi, guruhini almashtiradi, ketishini belgilaydi","Bolalar va to'lovchilarni Excel'dan yuklaydi, eski qarzlarni kiritadi","Bank ko'chirmasini yuklaydi va har bir kirimni tasdiqlaydi","Homiylik mablag'larini kiritadi","Byudjet loyihasini tuzadi","Xarajat zayavkasini tuzadi va yuboradi","Oy yopishni boshlaydi","Ota-onalarga Telegram havolasini beradi"],
+      no:["Narx belgilash","Kelmagan kunni sababli deb belgilash","O'zi tuzgan zayavkani tasdiqlash","Oy yopishni o'zi tasdiqlash"]},
+    {k:"cash", name:"Kassir", sub:"Pulni beradi",
+      yes:["Tasdiqlangan zayavka bo'yicha pulni beradi yoki o'tkazadi","To'lov hujjatini biriktiradi","Kerak bo'lsa, bir necha qismda to'laydi","Kassa va bank qoldiqlarini ko'radi"],
+      no:["Zayavkani tasdiqlash","O'zi tasdiqlagan zayavkani to'lash","Tasdiqlangan summadan ortiq to'lash","Kassada yo'q pulni berish","Bolalar, ota-onalar va qarzlarni ko'rish"]},
+    {k:"nm", name:"Bosh boshqaruvchi", sub:"Butun tarmoq ustidan nazorat",
+      yes:["Barcha bog'chalarni bitta «Tarmoq» sahifasida ko'radi","Bog'chalar byudjetini tasdiqlaydi yoki rad etadi","Direktor limitidan katta zayavkalarni hal qiladi","Byudjet blokini sabab yozib ochadi","Maqsadli mablag' cheklovini sabab yozib ochadi","Yopilgan oyni sabab yozib qayta ochadi","Hisobotlarni ko'radi va yuklab oladi"],
+      no:["Bolalarning ismlari va ota-onalarning telefonlarini ko'rish","Ota-onadan to'lov qabul qilish"]},
+    {k:"sa", name:"Super admin", sub:"Tizimni texnik boshqaradi",
+      yes:["Bog'chalar va foydalanuvchilarni boshqaradi","Tizim sozlamalari","Sahifalardagi yordam matnlarini tahrirlaydi"],
+      no:["Moliyaviy ekranlar va raqamlarni ko'rish (kerak bo'lsa, unga alohida «Bosh boshqaruvchi» roli beriladi va bu yozib qo'yiladi)"]},
+    {k:"par", name:"Ota-ona", sub:"Telegram orqali, parolsiz",
+      yes:["O'z farzandlari bo'yicha qarzni ko'radi","Har oy nima hisoblanganini va nima to'laganini ko'radi","Kvitansiyalarni ochadi","Click orqali to'laydi","Qarz eslatmalarini oladi yoki to'xtatadi","Tilni tanlaydi"],
+      no:["Boshqa oilalar ma'lumotini ko'rish","Boshqa bog'chaga kirish","Biror narsani o'zgartirish"]}
+  ];
+  var tabs = document.getElementById("roleTabs"), panel = document.getElementById("rolePanel");
+  function li(a){ return a.map(function(x){ return "<li>"+x+"</li>"; }).join(""); }
+  function showRole(i){
+    var r = ROLES[i];
+    Array.prototype.forEach.call(tabs.children, function(b, j){ b.setAttribute("aria-selected", j===i ? "true" : "false"); b.tabIndex = j===i ? 0 : -1; });
+    panel.innerHTML = '<div class="who"><h3>'+r.name+'</h3><span>'+r.sub+'</span></div>'+
+      '<div><div class="box-h">Qiladi</div><ul class="list">'+li(r.yes)+'</ul></div>'+
+      '<div><div class="box-h">Qila olmaydi</div><ul class="list no">'+li(r.no)+'</ul></div>';
+  }
+  ROLES.forEach(function(r, i){
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "tab"; b.role = "tab"; b.setAttribute("role","tab"); b.textContent = r.name;
+    b.addEventListener("click", function(){ showRole(i); });
+    b.addEventListener("keydown", function(e){
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+        var n = (i + (e.key === "ArrowRight" ? 1 : ROLES.length - 1)) % ROLES.length;
+        showRole(n); tabs.children[n].focus(); e.preventDefault();
+      }
+    });
+    tabs.appendChild(b);
+  });
+  showRole(0);
+
+  /* ---------- calculator ---------- */
+  function calc(){
+    var T = Math.max(0, val("cT")), W = Math.max(1, val("cW")), E = Math.min(Math.max(0, val("cE")), W);
+    var pRaw = Math.max(0,val("cS")) + Math.max(0,val("cR")) + Math.max(0,val("cI"));
+    var p = Math.min(pRaw, 50), F = Math.max(0, val("cF")), X = Math.min(Math.max(0, val("cX")), W);
+    var gross = T * E / W;
+    var afterPct = gross * (100 - p) / 100;
+    var charge = Math.max(0, Math.floor(afterPct - F + 1e-9));
+    var credit = Math.floor(T * X * (100 - p) / (W * 100) + 1e-9);
+    var lines = [];
+    lines.push(['Tarif', som(T), '']);
+    if (E < W) lines.push(['Ro\'yxatda: '+E+' / '+W+' ish kuni', som(gross), '']);
+    lines.push(['Foizli chegirma: '+pRaw+'%'+(pRaw>50?' → <span class="cap">50% chegara</span>':''), '−'+som(gross - afterPct).replace('−',''), 'minus']);
+    if (F > 0) lines.push(['Qat\'iy chegirma', '−'+som(F), 'minus']);
+    document.getElementById("cLines").innerHTML = lines.map(function(l){ return '<div class="l '+l[2]+'"><span>'+l[0]+'</span><span>'+l[1]+'</span></div>'; }).join("");
+    document.getElementById("cTotal").textContent = som(charge);
+    document.getElementById("cCredit").innerHTML = X > 0
+      ? 'Sababli kelmagan '+X+' kun uchun <b class="num">'+som(credit)+'</b> keyingi oy to\'lovidan ayiriladi. Shu oyning summasi o\'zgarmaydi.'
+      : 'Sababli kelmagan kun yo\'q — keyingi oyga o\'tkazma bo\'lmaydi.';
+  }
+  ["cT","cW","cE","cS","cR","cI","cF","cX"].forEach(function(id){ document.getElementById(id).addEventListener("input", calc); });
+  calc();
+
+  /* ---------- allocation ---------- */
+  var DEBTS = [["Oktabr",800000],["Noyabr",1500000]];
+  function alloc(){
+    var left = Math.max(0, val("aAmt")), html = "";
+    DEBTS.forEach(function(d){
+      var take = Math.min(left, d[1]); left -= take;
+      var pct = d[1] ? take / d[1] * 100 : 0, rest = d[1] - take;
+      html += '<div class="debt"><span class="m">'+d[0]+'</span>'+
+        '<div class="meter" aria-hidden="true"><div class="f" style="width:'+pct+'%"></div><div class="t">'+(take>0?som(take)+' yozildi':'')+'</div></div>'+
+        '<span class="st">'+(rest===0?'<span class="pill g">Yopildi</span>':'Qoldi: '+som(rest))+'</span></div>';
+    });
+    document.getElementById("aRows").innerHTML = html;
+    document.getElementById("aOver").innerHTML = left > 0 ? '<div class="over">Ortib qolgan <b class="num">'+som(left)+'</b> «oldindan to\'lov» bo\'lib turadi va keyingi hisobga yoziladi.</div>' : '';
+  }
+  document.getElementById("aAmt").addEventListener("input", alloc);
+  Array.prototype.forEach.call(document.querySelectorAll(".presets button"), function(b){
+    b.addEventListener("click", function(){ document.getElementById("aAmt").value = b.dataset.v; alloc(); });
+  });
+  alloc();
+
+  /* ---------- budget ---------- */
+  var PLAN = 20000000, USED = 14500000, LIMIT = 5000000;
+  function bud(){
+    var a = val("bAmt"), after = USED + a, pct = after / PLAN * 100;
+    document.getElementById("bAmtTxt").textContent = som(a);
+    var usedPct = USED / PLAN * 100;
+    document.getElementById("bUsed").style.width = usedPct + "%";
+    var f = document.getElementById("bFill");
+    f.style.left = usedPct + "%";
+    f.style.width = Math.max(0, Math.min(100, pct) - usedPct) + "%";
+    f.style.background = pct > 100 ? "var(--neg)" : pct >= 80 ? "var(--warn)" : "var(--accent)";
+    document.getElementById("bKv").innerHTML =
+      '<span>Reja: <b>'+som(PLAN)+'</b></span><span>Band qilingan: <b>'+som(USED)+'</b></span><span>Shu zayavkadan keyin: <b>'+som(after)+' ('+pct.toFixed(0)+'%)</b></span>';
+    var who = a > LIMIT ? ' Summa direktor limitidan (' + som(LIMIT) + ') katta, shuning uchun zayavka <b>bosh boshqaruvchiga uzatiladi</b>.' : ' Direktor o\'zi tasdiqlay oladi.';
+    var v;
+    if (pct > 100) v = '<div class="verdict block"><span>✕</span><span><b>Byudjet oshib ketadi.</b> Zayavka to\'xtatiladi — blokni faqat bosh boshqaruvchi sababini yozib ochadi.</span></div>';
+    else if (pct >= 80) v = '<div class="verdict warn"><span>!</span><span><b>Byudjetning 80% dan oshdi.</b> Ogohlantirish chiqadi, lekin zayavka davom etadi.'+who+'</span></div>';
+    else v = '<div class="verdict ok"><span>✓</span><span><b>Byudjet doirasida.</b>'+who+'</span></div>';
+    document.getElementById("bVerdict").innerHTML = v;
+  }
+  document.getElementById("bAmt").addEventListener("input", bud);
+  bud();
+
+  /* ---------- toc highlight ---------- */
+  var links = Array.prototype.slice.call(document.querySelectorAll("#toc a"));
+  var map = {}; links.forEach(function(a){ map[a.getAttribute("href").slice(1)] = a; });
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (e.isIntersecting) {
+          links.forEach(function(a){ a.classList.remove("on"); });
+          var a = map[e.target.id]; if (a) { a.classList.add("on"); try { a.scrollIntoView({block:"nearest", inline:"center"}); } catch(_){} }
+        }
+      });
+    }, {rootMargin:"-45% 0px -50% 0px"});
+    document.querySelectorAll("section.s").forEach(function(s){ io.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>
