@@ -420,7 +420,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-bet
       <div class="tag">Video</div>
       <div>
         <h2>Daftar bir yarim daqiqada</h2>
-        <p>Eng asosiysi qisqa videoda: oylik hisob, Telegram orqali to'lov, sababli kunlar, xarajat zayavkasi, byudjet nazorati va storno. O'zbek va rus tilida, subtitr bilan.</p>
+        <p>Eng asosiysi qisqa videoda: oylik hisob, Telegram orqali to'lov, sababli kunlar, xarajat zayavkasi, byudjet nazorati va storno. O'zbek va rus tilida, ovoz va subtitr bilan.</p>
       </div>
     </div>
     <div class="body">
@@ -429,7 +429,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-bet
         <button type="button" class="tab" role="tab" aria-selected="false" data-lang="ru">Русский</button>
       </div>
       <div class="vid-frame">
-        <video id="vid" controls playsinline preload="metadata" poster="poster-uz.jpg" src="Daftar-uz.mp4"></video>
+        <video id="vid" controls playsinline preload="metadata" poster="poster-uz.jpg" src="Daftar-uz.mp4?v=2"></video>
       </div>
       <div class="vid-dl">
         <span>Yuklab olish:</span>
@@ -991,8 +991,8 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-bet
       b.addEventListener("click", function(){
         var l = b.dataset.lang;
         Array.prototype.forEach.call(tabs, function(x){ x.setAttribute("aria-selected", x === b ? "true" : "false"); });
-        if (v.getAttribute("src") === "Daftar-" + l + ".mp4") return;
-        v.pause(); v.setAttribute("poster", "poster-" + l + ".jpg"); v.setAttribute("src", "Daftar-" + l + ".mp4"); v.load();
+        if (v.getAttribute("src") === "Daftar-" + l + ".mp4?v=2") return;
+        v.pause(); v.setAttribute("poster", "poster-" + l + ".jpg"); v.setAttribute("src", "Daftar-" + l + ".mp4?v=2"); v.load();
       });
     });
   })();
