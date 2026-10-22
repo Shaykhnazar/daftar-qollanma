@@ -320,6 +320,10 @@ details p{color:var(--ink-2);padding-bottom:16px;max-width:70ch}
 
 footer{padding-block:40px 60px;color:var(--ink-3);font-size:14px}
 footer .wrap{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between}
+.vid-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.vid-frame{border-radius:10px;overflow:hidden;border:1px solid var(--rule);background:#000;box-shadow:var(--shadow);aspect-ratio:16/9;max-width:100%}
+.vid-frame video{display:block;width:100%;height:100%}
+.vid-dl{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:12px;font-size:15px;color:var(--ink-3)}
 </style>
 </head>
 <body>
@@ -329,6 +333,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-bet
   <div class="wrap">
     <a class="mark" href="#top">Daftar<i></i></a>
     <nav class="toc" id="toc" aria-label="Bo'limlar">
+      <a href="#video">Video</a>
       <a href="#rollar">Kim nima qiladi</a>
       <a href="#oy">Bir oy</a>
       <a href="#hisob">To'lov hisobi</a>
@@ -364,6 +369,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-bet
       <div class="dl">
         <a class="p" href="Daftar-taqdimot.pptx" download>Taqdimot — PowerPoint</a>
         <a class="s" href="Daftar-taqdimot.pdf" download>Taqdimot — PDF</a>
+        <a class="s" href="#video">Videoni ko'rish</a>
         <span>17 slayd, so'zlovchi izohlari bilan</span>
       </div>
     </div>
@@ -408,6 +414,32 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-bet
 </div>
 
 <!-- ======================= ROLES ======================= -->
+<section class="s" id="video">
+  <div class="wrap">
+    <div class="s-head">
+      <div class="tag">Video</div>
+      <div>
+        <h2>Daftar bir yarim daqiqada</h2>
+        <p>Eng asosiysi qisqa videoda: oylik hisob, Telegram orqali to'lov, sababli kunlar, xarajat zayavkasi, byudjet nazorati va storno. O'zbek va rus tilida, subtitr bilan.</p>
+      </div>
+    </div>
+    <div class="body">
+      <div class="vid-tabs" role="tablist" aria-label="Video tili">
+        <button type="button" class="tab" role="tab" aria-selected="true" data-lang="uz">O'zbekcha</button>
+        <button type="button" class="tab" role="tab" aria-selected="false" data-lang="ru">Русский</button>
+      </div>
+      <div class="vid-frame">
+        <video id="vid" controls playsinline preload="metadata" poster="poster-uz.jpg" src="Daftar-uz.mp4"></video>
+      </div>
+      <div class="vid-dl">
+        <span>Yuklab olish:</span>
+        <a href="Daftar-uz.mp4" download>O'zbekcha, MP4</a>
+        <a href="Daftar-ru.mp4" download>Русский, MP4</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="s" id="rollar">
   <div class="wrap">
     <div class="s-head">
@@ -950,6 +982,20 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-bet
   document.getElementById("bAmt").addEventListener("input", bud);
   bud();
 
+
+  /* ---------- video language ---------- */
+  (function(){
+    var v = document.getElementById("vid"); if (!v) return;
+    var tabs = document.querySelectorAll(".vid-tabs .tab");
+    Array.prototype.forEach.call(tabs, function(b){
+      b.addEventListener("click", function(){
+        var l = b.dataset.lang;
+        Array.prototype.forEach.call(tabs, function(x){ x.setAttribute("aria-selected", x === b ? "true" : "false"); });
+        if (v.getAttribute("src") === "Daftar-" + l + ".mp4") return;
+        v.pause(); v.setAttribute("poster", "poster-" + l + ".jpg"); v.setAttribute("src", "Daftar-" + l + ".mp4"); v.load();
+      });
+    });
+  })();
   /* ---------- toc highlight ---------- */
   var links = Array.prototype.slice.call(document.querySelectorAll("#toc a"));
   var map = {}; links.forEach(function(a){ map[a.getAttribute("href").slice(1)] = a; });
